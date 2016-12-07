@@ -34,6 +34,21 @@ cat << POLICY
           ]
         }
       }
+    },
+    {
+      "Effect": "Deny",
+      "Principal": {
+        "AWS": "*"
+      },
+      "Action": "s3:*",
+      "Resource": "arn:aws:s3:::bocoup-test/*",
+      "Condition": {
+        "NotIpAddress": {
+          "aws:SourceIp": [
+            "$(ips | xargs | sed -e 's/ /","/g')"
+          ]
+        }
+      }
     }
   ]
 }
