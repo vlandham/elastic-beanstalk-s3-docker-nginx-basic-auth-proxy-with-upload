@@ -13,10 +13,15 @@ aws_access_key_id = AKIAIMZWLTOOSTF6JN4A
 aws_secret_access_key = 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
 ```
 
-Next, edit `nginx.conf` to reference the bucket you're trying to proxy.
+Next, edit `nginx.conf` to reference the bucket you're trying to proxy and the bucket
+where uploads should go.
+
 ```
-set $bucket 'my-bucket-name';
+set $upload_bucket 'my-bucket-name';
+set $site_bucket 'my-bucket-name';
 ```
+
+**NOTE** the two buckets variables can point to the same S3 bucket.
 
 Next, set up your credentials file, `.htpasswd`. If you don't know how to
 generate usernames and passwords, [use this website](http://www.htaccesstools.com/htpasswd-generator/).
@@ -122,11 +127,22 @@ INFO: Successfully launched environment: nginx-s3-proxy-dev
 ### Interacting w/ Your Application
 You can now visit your proxy by running `eb open`.
 
+### Ensure Static Website Hosting is Enabled
+For the proxy bucket to work correctly, it should Have "Enable website hosting" enabled in its S3 properties.
+
+### Enabel CORS for Uploads
+The upload bucket should have CORS enabled.
+A utility is included in this repository to generate the correct policy.
+Running `.cors.sh` will output a CORS configuration to apply to the bucket.
+
 ### Granting Upload Access to S3 Bucket (or read access to private buckets)
 If your bucket is private, the easiest way to give your application access is
 to apply a bucket policy that grants full access by IP. A utility is included
 in this repository to generate the correct policy. Running `./policy.sh` will
 output a bucket policy you can apply manually in S3.
+
+This policy should be applied to both file upload and proxy buckets.
+
 
 #### Allowing Uploads
 If you have applied the bucket policy mentioned above, it is now possible to
