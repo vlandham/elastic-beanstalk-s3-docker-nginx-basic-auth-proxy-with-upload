@@ -130,11 +130,6 @@ You can now visit your proxy by running `eb open`.
 ### Ensure Static Website Hosting is Enabled
 For the proxy bucket to work correctly, it should Have "Enable website hosting" enabled in its S3 properties.
 
-### Enabel CORS for Uploads
-The upload bucket should have CORS enabled.
-A utility is included in this repository to generate the correct policy.
-Running `.cors.sh` will output a CORS configuration to apply to the bucket.
-
 ### Granting Upload Access to S3 Bucket (or read access to private buckets)
 If your bucket is private, the easiest way to give your application access is
 to apply a bucket policy that grants full access by IP. A utility is included
